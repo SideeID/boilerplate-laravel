@@ -22,101 +22,91 @@
 
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6">
-                <h1 class="text-2xl font-bold text-white mb-2">Detail Pendaftaran Magang</h1>
-                <div class="flex items-center space-x-4">
+            <div class="bg-blue-600 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white mb-2">Detail Pendaftaran Magang</h1>
+                        <p class="text-blue-100 text-sm">
+                            <i data-feather="calendar" class="w-4 h-4 inline mr-1"></i>
+                            Didaftarkan pada {{ $pendaftaran->created_at->format('d M Y, H:i') }} WIB
+                        </p>
+                    </div>
                     @if($pendaftaran->status === 'P')
-                    <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
-                        <i data-feather="clock" class="w-4 h-4 inline mr-1"></i>
+                    <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg text-sm font-semibold">
                         Pending
                     </span>
                     @elseif($pendaftaran->status === 'A')
-                    <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
-                        <i data-feather="check-circle" class="w-4 h-4 inline mr-1"></i>
+                    <span class="px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm font-semibold">
                         Diterima
                     </span>
                     @else
-                    <span class="px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
-                        <i data-feather="x-circle" class="w-4 h-4 inline mr-1"></i>
+                    <span class="px-4 py-2 bg-red-100 text-red-800 rounded-lg text-sm font-semibold">
                         Ditolak
                     </span>
                     @endif
-                    <span class="text-white text-sm">
-                        <i data-feather="calendar" class="w-4 h-4 inline mr-1"></i>
-                        {{ $pendaftaran->created_at->format('d M Y H:i') }}
-                    </span>
                 </div>
             </div>
 
             <div class="p-8">
                 <!-- Informasi Lowongan -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                        <i data-feather="briefcase" class="w-5 h-5 mr-2 text-blue-600"></i>
-                        Informasi Lowongan
-                    </h2>
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <div class="grid grid-cols-2 gap-4">
+                <div class="mb-6 pb-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Informasi Lowongan</h2>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-6">
                             <div>
-                                <p class="text-sm text-gray-600">Posisi</p>
-                                <p class="font-semibold text-gray-900">{{ $pendaftaran->lowongan->posisi }}</p>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Posisi</p>
+                                <p class="text-base font-semibold text-gray-900">{{ $pendaftaran->lowongan->posisi }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Departemen</p>
-                                <p class="font-semibold text-gray-900">{{ $pendaftaran->lowongan->departemen->name ?? '-' }}</p>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Departemen</p>
+                                <p class="text-base font-semibold text-gray-900">{{ $pendaftaran->lowongan->departemen->name ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data Pribadi -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                        <i data-feather="user" class="w-5 h-5 mr-2 text-blue-600"></i>
-                        Data Pribadi
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">Nama Lengkap</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->name }}</p>
+                <div class="mb-6 pb-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Pribadi</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Nama Lengkap</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->name }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">Jenis Kelamin</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->gender === 'male' ? 'Laki-laki' : 'Perempuan' }}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Jenis Kelamin</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->gender === 'male' ? 'Laki-laki' : 'Perempuan' }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">Tanggal Lahir</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->dob->format('d M Y') }}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Tanggal Lahir</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->dob->format('d M Y') }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">No. Telepon</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->no_telp }}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">No. Telepon</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->no_telp }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3 md:col-span-2">
-                            <p class="text-sm text-gray-600">Alamat</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->address }}</p>
+                        <div class="md:col-span-2">
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Alamat</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->address }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data Akademik -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                        <i data-feather="book" class="w-5 h-5 mr-2 text-blue-600"></i>
-                        Data Akademik
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">Universitas</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->university }}</p>
+                <div class="mb-6 pb-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Data Akademik</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Universitas</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->university }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">Program Studi</p>
-                            <p class="font-medium text-gray-900">{{ $pendaftaran->major }}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Program Studi</p>
+                            <p class="text-base text-gray-900">{{ $pendaftaran->major }}</p>
                         </div>
-                        <div class="border-b border-gray-200 pb-3">
-                            <p class="text-sm text-gray-600">IPK</p>
-                            <p class="font-medium text-gray-900">{{ number_format($pendaftaran->ipk, 2) }}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">IPK</p>
+                            <p class="text-base font-semibold text-gray-900">{{ number_format($pendaftaran->ipk, 2) }}</p>
                         </div>
                     </div>
                 </div>
@@ -124,7 +114,6 @@
                 <!-- CV -->
                 <div class="mb-8">
                     <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                        <i data-feather="file-text" class="w-5 h-5 mr-2 text-blue-600"></i>
                         Curriculum Vitae
                     </h2>
                     @if($pendaftaran->path_cv)
@@ -141,10 +130,10 @@
 
                 <!-- Actions -->
                 @if($pendaftaran->status === 'P')
-                <div class="border-t border-gray-200 pt-6">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4">Aksi Seleksi</h2>
-                    <div class="flex space-x-4">
-                        <form action="{{ route('admin.pendaftaran.approve', $pendaftaran->id) }}" method="POST" class="flex-1">
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Aksi Seleksi</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <form action="{{ route('admin.pendaftaran.approve', $pendaftaran->id) }}" method="POST">
                             @csrf
                             <button type="submit"
                                     onclick="return confirm('Apakah Anda yakin ingin menerima pendaftaran ini?')"
@@ -153,7 +142,7 @@
                                 Terima Pendaftar
                             </button>
                         </form>
-                        <form action="{{ route('admin.pendaftaran.reject', $pendaftaran->id) }}" method="POST" class="flex-1">
+                        <form action="{{ route('admin.pendaftaran.reject', $pendaftaran->id) }}" method="POST">
                             @csrf
                             <button type="submit"
                                     onclick="return confirm('Apakah Anda yakin ingin menolak pendaftaran ini?')"
@@ -165,13 +154,16 @@
                     </div>
                 </div>
                 @else
-                <div class="border-t border-gray-200 pt-6">
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                        <i data-feather="info" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
-                        <p class="text-gray-600">
-                            Pendaftaran ini telah
-                            <span class="font-semibold">{{ $pendaftaran->status === 'A' ? 'diterima' : 'ditolak' }}</span>
-                            pada {{ $pendaftaran->updated_at->format('d M Y H:i') }}
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <div class="bg-gray-50 rounded-lg p-6 text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-200 rounded-full mb-3">
+                            <i data-feather="info" class="w-6 h-6 text-gray-500"></i>
+                        </div>
+                        <p class="text-gray-700 font-medium">
+                            Pendaftaran telah <span class="font-semibold">{{ $pendaftaran->status === 'A' ? 'diterima' : 'ditolak' }}</span>
+                        </p>
+                        <p class="text-gray-500 text-sm mt-1">
+                            {{ $pendaftaran->updated_at->format('d M Y, H:i') }} WIB
                         </p>
                     </div>
                 </div>
