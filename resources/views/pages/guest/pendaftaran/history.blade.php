@@ -7,7 +7,7 @@
             </div>
             <div>
                 <a href="{{ route('guest.lowongan.index') }}"
-                   class="btn bg-orange-500 hover:bg-orange-600 text-white">
+                   class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-150">
                     <i data-feather="briefcase" class="w-4 h-4 mr-2"></i>
                     Lihat Lowongan
                 </a>

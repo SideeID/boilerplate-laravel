@@ -16,7 +16,6 @@ class ReportController extends Controller
     {
         $departemens = $this->departemenRepository->getAllWithLowonganStats();
 
-        // Calculate summary for each department
         $reportData = $departemens->map(function ($departemen) {
             $totalQuota = 0;
             $totalPendaftar = 0;
