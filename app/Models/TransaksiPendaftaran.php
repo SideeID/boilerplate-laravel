@@ -10,6 +10,7 @@ class TransaksiPendaftaran extends Model
     protected $table = 'transaksi_pendaftarans';
 
     protected $fillable = [
+        'id_user',
         'id_lowongan',
         'name',
         'gender',
@@ -24,12 +25,18 @@ class TransaksiPendaftaran extends Model
     ];
 
     protected $casts = [
+        'id_user' => 'integer',
         'id_lowongan' => 'integer',
         'dob' => 'date',
         'ipk' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 
     public function lowongan(): BelongsTo
     {
