@@ -7,7 +7,7 @@
                 <p class="text-gray-600 mt-1">Summary pendaftar per departemen dan status</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="window.print()" class="inline-flex items-center px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white">
+                <button onclick="window.print()" class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors duration-150 no-print">
                     <i data-feather="printer" class="w-4 h-4 mr-2"></i>
                     Print Laporan
                 </button>
@@ -207,7 +207,7 @@
 
     <style>
         @media print {
-            .btn, nav, footer {
+            .no-print, nav, footer {
                 display: none !important;
             }
             body {

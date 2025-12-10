@@ -1,59 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Boilerplate - Service + Repository Pattern
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Project Laravel ini adalah boilerplate yang gue pake untuk development dengan pattern **Service Layer + Repository Layer**. Tujuannya simpel: struktur yang konsisten, kode yang gampang di-maintain, dan scalable buat project yang mulai gede.
 
-## About Laravel
+## Kenapa Pake Pattern Ini?
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Karena gue butuh:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Pemisahan tanggung jawab yang jelas (controller, service, repository)
+-   Business logic yang nggak berantakan
+-   Kode yang gampang di-test
+-   Developer baru (atau AI assistant) bisa langsung paham flow-nya
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Arsitektur Flow
 
-## Learning Laravel
+```
+Route → Controller → Form Request → Service → Repository → Model → Database
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Penjelasan Singkat:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Controller**: Nerima request, manggil service, return response. That's it. No query, no logic.
+-   **Form Request**: Validasi input pake Laravel Form Request (`php artisan make:request`)
+-   **Service**: Tempat semua business logic, perhitungan, dan rules aplikasi
+-   **Repository**: Handle semua query database, join, pagination, dll
+-   **Model**: Cuma relasi sama attribute, nggak ada logic
 
-## Laravel Sponsors
+## Struktur Folder
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+app/
+├── Http/
+│   ├── Controllers/        # Thin controllers
+│   └── Requests/           # Form validation
+├── Models/                 # Eloquent models
+├── Services/               # Business logic layer
+├── Repositories/           # Database access layer
+└── Providers/              # Service providers
+```
 
-### Premium Partners
+## Quick Example
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Controller (Thin & Clean)
 
-## Contributing
+```php
+public function store(StorePasienRequest $request, PasienService $service)
+{
+    $service->create($request->validated());
+    return redirect()->back()->with('success', 'Data berhasil disimpan');
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Service (Business Logic)
 
-## Code of Conduct
+```php
+public function create(array $data): Pasien
+{
+    // Business logic di sini
+    if ($this->isDuplicate($data['email'])) {
+        throw new Exception('Email sudah terdaftar');
+    }
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    return $this->repository->store($data);
+}
+```
 
-## Security Vulnerabilities
+### Repository (Database Access)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```php
+public function store(array $data): Pasien
+{
+    return Pasien::create($data);
+}
 
-## License
+public function findById(int $id): ?Pasien
+{
+    return Pasien::find($id);
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Rules yang WAJIB Diikuti
+
+### ✅ DO:
+
+-   Pake Dependency Injection di constructor
+-   Type hinting & return type
+-   Validasi pake Form Request
+-   Business logic di Service
+-   Query database di Repository
+-   Follow PSR-12
+
+### ❌ DON'T:
+
+-   Query database di Controller
+-   Business logic di Controller
+-   Logic di Model (fat model)
+-   Bikin helper function global sembarangan
+-   Validasi di Controller
+-   `new ClassName()` → pake DI!
+
+## Penamaan File
+
+Format: `<Entity><Type>.php`
+
+Contoh:
+
+-   `UserService.php`
+-   `PasienRepository.php`
+-   `StorePasienRequest.php`
+-   `TransaksiController.php`
+
+## Notes
+
+Boilerplate ini dibuat dengan tujuan supaya setiap developer (atau AI assistant) yang kerja di project ini bisa langsung paham flow-nya tanpa ribet. Struktur ini udah terbukti enak buat di-scale dan di-maintain di project-project sebelumnya.
+
+Feel free to fork & adjust sesuai kebutuhan lo!
+
+---
+
+**License:** MIT
